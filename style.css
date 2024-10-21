@@ -299,6 +299,7 @@ input:checked + .slider:before {
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    background-color: #e8fcff;
     display: flex;
     flex-direction: column;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -327,9 +328,10 @@ input:checked + .slider:before {
     font-weight: bold;
     font-family: sans-serif;
     color: #17A2B8;
-    background-color: #eefdff;
+    background-color: #ffffff;
     text-transform: uppercase;
     border-radius: 7px;
+    border: 1px solid #000000;
 }
 
 .post__content {
