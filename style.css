@@ -175,6 +175,12 @@ input:checked + .slider:before {
     box-shadow: 0px 12px 24px -6px #181A2A;
 }
 
+.curr-post__header{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+}
+
 
 .curr-post__category {
     font-size: 10px;
@@ -183,10 +189,31 @@ input:checked + .slider:before {
     padding: 10px 10px 10px 10px;
     font-weight: bold;
     font-family: sans-serif;
+    text-align: center;
     color: #ffffff;
     background-color: var(--primaryColor);
     text-transform: uppercase;
     border-radius: 7px;
+}
+
+.delete-btn-current {
+    font-size: 10px;
+    width: 70px;
+    height: 30px;
+    padding: 10px 10px 10px 10px;
+    font-weight: bold;
+    font-family: sans-serif;
+    text-align: center;
+    color: #ffffff;
+    background-color: red;
+    text-transform: uppercase;
+    border-radius: 7px;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.delete-btn-current:hover {
+    background-color: darkred;
 }
 
 .curr-post__content {
@@ -379,6 +406,7 @@ input:checked + .slider:before {
 
 
 .post {
+    position: relative;
     width: 360px;
     height: 490px;
     border-radius: 10px;
@@ -400,6 +428,30 @@ input:checked + .slider:before {
     height: 250px; 
     object-fit: cover; 
     border: 1px solid var(--textColor);
+    border-radius: 10px;
+}
+
+.delete-btn-all {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 10px;
+    width: 70px;
+    height: 30px;
+    padding: 5px;
+    text-align: center;
+    font-weight: bold;
+    font-family: sans-serif;
+    color: red;
+    background-color: #ffffff;
+    text-transform: uppercase;
+    border-radius: 7px;
+    border: 1px solid #000000;
+    transition: all 0.3s ease;
+}
+
+.delete-btn-all:hover {
+    background-color: darkred;
 }
 
 
@@ -457,7 +509,7 @@ input:checked + .slider:before {
 }
 
 
-.latest-posts button {
+.view-all-post {
     display: block;
     margin: 20px auto;
     padding: 10px 20px;
@@ -470,7 +522,7 @@ input:checked + .slider:before {
     transition: all 0.3s ease;
 }
 
-.latest-posts button:hover {
+.view-all-post:hover {
     background-color: var(--hoverColor);
     color: #ffffff;
 }

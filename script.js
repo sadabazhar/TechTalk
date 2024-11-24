@@ -1,4 +1,5 @@
 
+// All post data
 const posts = [
     {
         postImg: "./utils/C-VS-Java.jpg",
@@ -108,7 +109,7 @@ const closePostBox = () => {
 }
 
 
-// User creates post
+// User can create post
 const blogImgUrlValue = document.querySelector("#blog-img-url");
 const blogCategoryValue = document.querySelector("#blog-category");
 const blogContentValue = document.querySelector("#blog-content");
@@ -137,8 +138,18 @@ const createPost = () => {
 }
 
 
+// Delete post
+const deletePost = (event) => {
+    const postIndex = parseInt(event.target.dataset.index, 10);
+    if (!isNaN(postIndex)) {
+        posts.splice(postIndex, 1);
+    }
+};
 
-//Shows latest one (IIFE)
+
+
+
+//Shows latest one
 const postContainer = document.querySelector("#post-container");
 const viewPosts = document.querySelector("#view-posts");
 
@@ -155,10 +166,25 @@ const currentPost = () => {
     const currPostContainer = document.createElement("div");
     currPostContainer.classList.add("curr-post");
 
+    // Add the delete button
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Delete";
+    deleteButton.classList.add("delete-btn-current");
+    deleteButton.dataset.index = 0;
+    deleteButton.onclick = (event) => {
+        deletePost(event);
+        currentPost(); // Re-render posts after deletion
+        defultPosts(); // Re-render posts after deletion
+    };
+
     // Add post category
     const postCategory = document.createElement("span");
     postCategory.classList.add("curr-post__category");
     postCategory.textContent = posts[0].postCategory;
+
+    //Add current post header
+    const currPostHeader = document.createElement("div");
+    currPostHeader.classList.add("curr-post__header");
 
     // Add post content
     const postContent = document.createElement("div");
@@ -182,17 +208,21 @@ const currentPost = () => {
     const postDate = document.createElement("span");
     postDate.textContent = posts[0].postDate;
 
+    // Append delete button and post category to currPostHeader
+    currPostHeader.appendChild(deleteButton);
+    currPostHeader.appendChild(postCategory);
+
     // Append author image, name, date to author
     author.appendChild(authorImg);
     author.appendChild(authorName);
     author.appendChild(postDate);
 
     // Append post category, content, author to post container
-    currPostContainer.appendChild(postCategory);
+    currPostContainer.appendChild(currPostHeader);
     currPostContainer.appendChild(postContent);
     currPostContainer.appendChild(author);
 
-    // Append post container to the header
+    // Append current post container to the header
     header.appendChild(currPostContainer);
 };
 currentPost();
@@ -214,6 +244,16 @@ const defultPosts = () => {
         postImg.alt = "Post image";
         postImg.loading = "lazy";
 
+        // Add the delete button
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete";
+        deleteButton.classList.add("delete-btn-all");
+        deleteButton.dataset.index = i;
+        deleteButton.onclick = (event) => {
+            deletePost(event);
+            defultPosts(); // Re-render posts after deletion
+        };
+
         // Add post category
         const postCategory = document.createElement("span");
         postCategory.classList.add("post__category");
@@ -248,6 +288,7 @@ const defultPosts = () => {
 
         // Append Post image, category, content, author to post
         postElement.appendChild(postImg);
+        postElement.appendChild(deleteButton);
         postElement.appendChild(postCategory);
         postElement.appendChild(postContent);
         postElement.appendChild(author);
@@ -262,7 +303,7 @@ defultPosts();
 
 //Render all posts
 const renderAllPosts = () => {
-    postContainer.innerHTML = ""; // Clear the container first (optional)
+    postContainer.innerHTML = ""; // Clear container first (best practice)
 
     for(let i = 1 ; i < posts.length ; i++){
         // Create a post element
@@ -274,6 +315,16 @@ const renderAllPosts = () => {
         postImg.src = posts[i].postImg;
         postImg.alt = "Post image";
         postImg.loading = "lazy";
+
+        // Add the delete button
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete";
+        deleteButton.classList.add("delete-btn-all");
+        deleteButton.dataset.index = i;
+        deleteButton.onclick = (event) => {
+            deletePost(event);
+            renderAllPosts(); // Re-render posts after deletion
+        };
 
         // Add post category
         const postCategory = document.createElement("span");
@@ -311,6 +362,7 @@ const renderAllPosts = () => {
 
         // Append Post image, category, content, author to post
         postElement.appendChild(postImg);
+        postElement.appendChild(deleteButton);
         postElement.appendChild(postCategory);
         postElement.appendChild(postContent);
         postElement.appendChild(author);
