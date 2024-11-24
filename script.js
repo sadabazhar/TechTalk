@@ -88,6 +88,7 @@ const root = document.documentElement;
 let toggle = () => {
     let isChecked = document.querySelector("#theme-toggle").checked;
 
+    // change background to black if input is checked else white
     if (isChecked) {
         document.querySelector("body").style.backgroundColor = "black";
         root.style.setProperty('--textColor', '#ffffff');
@@ -97,13 +98,13 @@ let toggle = () => {
     }
 };
 
-//Open create post box
+//Open (show) create post box
 const openPostBoxDiv = document.querySelector("#create-post-box");
 const openPostBox = () =>{    
     openPostBoxDiv.style.display= "block";
 }
 
-//close post box
+//close (hide) post box
 const closePostBox = () => {
     openPostBoxDiv.style.display = "none";
 }
@@ -119,7 +120,7 @@ const authorNameValue = document.querySelector("#author-name");
 const createPost = () => {
 
     const newPost = {
-        postImg: blogImgUrlValue.value.trim(), //trim() remove black spaces
+        postImg: blogImgUrlValue.value.trim(), //trim() => remove blank spaces
         postCategory: blogCategoryValue.value,
         postContent: blogContentValue.value,
         authorImg: authorImgUrlValue.value,
@@ -131,16 +132,24 @@ const createPost = () => {
         }) // gives date in this format => Month_Name date, year
     }
 
+    // add the new post to starting position
     posts.unshift(newPost);
+
+    // Reload posts after creating a new post
     currentPost();
     defultPosts();
+
+    // Close (hide) post box
     closePostBox();
 }
 
 
 // Delete post
 const deletePost = (event) => {
+    //gives element index in numaric form
     const postIndex = parseInt(event.target.dataset.index, 10);
+
+    // run if the index is valid (not NaN)
     if (!isNaN(postIndex)) {
         posts.splice(postIndex, 1);
     }
@@ -162,36 +171,39 @@ const currentPost = () => {
         existingCurrPost.remove();
     }
 
-    // Add post container
+
+    // create post container div
     const currPostContainer = document.createElement("div");
     currPostContainer.classList.add("curr-post");
 
-    // Add the delete button
+    // create the delete button
     const deleteButton = document.createElement("button");
     deleteButton.textContent = "Delete";
     deleteButton.classList.add("delete-btn-current");
     deleteButton.dataset.index = 0;
     deleteButton.onclick = (event) => {
         deletePost(event);
-        currentPost(); // Re-render posts after deletion
-        defultPosts(); // Re-render posts after deletion
+
+        // Re-render available posts after deletion
+        currentPost(); 
+        defultPosts();
     };
 
-    // Add post category
+    // create post category span
     const postCategory = document.createElement("span");
     postCategory.classList.add("curr-post__category");
     postCategory.textContent = posts[0].postCategory;
 
-    //Add current post header
+    //create current post header div
     const currPostHeader = document.createElement("div");
     currPostHeader.classList.add("curr-post__header");
 
-    // Add post content
+    // create post content div
     const postContent = document.createElement("div");
     postContent.classList.add("curr-post__content");
     postContent.textContent = posts[0].postContent;
 
-    // Add author section
+    // create author section 
     const author = document.createElement("address");
     author.classList.add("curr-author");
 
@@ -208,92 +220,94 @@ const currentPost = () => {
     const postDate = document.createElement("span");
     postDate.textContent = posts[0].postDate;
 
-    // Append delete button and post category to currPostHeader
+    // Add delete button and post category into currPostHeader
     currPostHeader.appendChild(deleteButton);
     currPostHeader.appendChild(postCategory);
 
-    // Append author image, name, date to author
+    // Add author image, name, date into author div
     author.appendChild(authorImg);
     author.appendChild(authorName);
     author.appendChild(postDate);
 
-    // Append post category, content, author to post container
+    // Add post post header, content, author into post container
     currPostContainer.appendChild(currPostHeader);
     currPostContainer.appendChild(postContent);
     currPostContainer.appendChild(author);
 
-    // Append current post container to the header
+    // finally Add current post container into the header div
     header.appendChild(currPostContainer);
 };
 currentPost();
 
 
-// Shows top 6 latest posts (IIFE) BY default
+// Shows top 6 latest posts
 const defultPosts = () => {
 
     postContainer.innerHTML = ""; // Clear existing posts (cause of bug)
 
     for(let i = 1; i < 7; i++) {
+
         // Create a post element
         const postElement = document.createElement("article");
         postElement.classList.add("post");
 
-        // Add post image
+        // Create post image element
         const postImg = document.createElement("img");
         postImg.src = posts[i].postImg;
         postImg.alt = "Post image";
         postImg.loading = "lazy";
 
-        // Add the delete button
+        // Craete delete button
         const deleteButton = document.createElement("button");
         deleteButton.textContent = "Delete";
         deleteButton.classList.add("delete-btn-all");
         deleteButton.dataset.index = i;
         deleteButton.onclick = (event) => {
             deletePost(event);
-            defultPosts(); // Re-render posts after deletion
+            // Re-render available posts after deletion
+            defultPosts();
         };
 
-        // Add post category
+        // create post category element
         const postCategory = document.createElement("span");
         postCategory.classList.add("post__category");
         postCategory.textContent = posts[i].postCategory;
 
-        // Add post content
+        // create post content div
         const postContent = document.createElement("div");
         postContent.classList.add("post__content");
         postContent.textContent = posts[i].postContent;
 
-        // Add author section
+        // create author section
         const author = document.createElement("address");
         author.classList.add("author");
 
-        // Add author image
+        // create author image element
         const authorImg = document.createElement("img");
         authorImg.src = posts[i].authorImg;
         authorImg.alt = "Author image";
 
-        // Add author name
+        // create author name span
         const authorName = document.createElement("span");
         authorName.textContent = posts[i].authorName;
 
-        // Add post date
+        // create post date span
         const postDate = document.createElement("span");
         postDate.textContent = posts[i].postDate;
 
-        // Append author image, name, date to author
+        // Add author image, name, date into author element
         author.appendChild(authorImg);
         author.appendChild(authorName);
         author.appendChild(postDate);
 
-        // Append Post image, category, content, author to post
+        // Add Post image, delete buttom, category, content, author into post element
         postElement.appendChild(postImg);
         postElement.appendChild(deleteButton);
         postElement.appendChild(postCategory);
         postElement.appendChild(postContent);
         postElement.appendChild(author);
 
-        // Finally Append post info to Post container
+        // Finally Add all post info into Post container element
         postContainer.appendChild(postElement);   
     }
 };
@@ -310,64 +324,65 @@ const renderAllPosts = () => {
         const postElement = document.createElement("article");
         postElement.classList.add("post");
 
-        // Add post image
+        // create post image element
         const postImg = document.createElement("img");
         postImg.src = posts[i].postImg;
         postImg.alt = "Post image";
         postImg.loading = "lazy";
 
-        // Add the delete button
+        // create the delete button
         const deleteButton = document.createElement("button");
         deleteButton.textContent = "Delete";
         deleteButton.classList.add("delete-btn-all");
         deleteButton.dataset.index = i;
         deleteButton.onclick = (event) => {
             deletePost(event);
-            renderAllPosts(); // Re-render posts after deletion
+            // Re-render available posts after deletion
+            renderAllPosts();
         };
 
-        // Add post category
+        // create post category element
         const postCategory = document.createElement("span");
         postCategory.classList.add("post__category");
         postCategory.textContent = posts[i].postCategory;
 
-        // Add post content
+        // create post content div
         const postContent = document.createElement("div");
         postContent.classList.add("post__content");
         postContent.textContent = posts[i].postContent;
 
-        // Add author section
+        // create author section
         const author = document.createElement("address");
         author.classList.add("author");
 
-        // Add author image
+        // create author image element
         const authorImg = document.createElement("img");
         authorImg.src = posts[i].authorImg;
         authorImg.alt = "Author image";
 
-        // Add author name
+        // create author name element
         const authorName = document.createElement("span");
         authorName.textContent = posts[i].authorName;
 
-        // Add post date
+        // create post date element
         const postDate = document.createElement("span");
         postDate.textContent = posts[i].postDate;
 
 
-        // Append author image, name, date to author
+        // Add author image, name, date element into author div
         author.appendChild(authorImg);
         author.appendChild(authorName);
         author.appendChild(postDate);
 
 
-        // Append Post image, category, content, author to post
+        // Add Post image, delete button, category, content, author element into post div
         postElement.appendChild(postImg);
         postElement.appendChild(deleteButton);
         postElement.appendChild(postCategory);
         postElement.appendChild(postContent);
         postElement.appendChild(author);
 
-        // Finaly Append post info to Post container
+        // Finaly Add all post info Post container element
         postContainer.appendChild(postElement);   
     }
 };
